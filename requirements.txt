@@ -1,0 +1,4 @@
+intersystems-irispython>=5.3.0
+haystack-ai>=2.0.0
+sentence-transformers>=3.0.0
+python-dotenv>=1.0.0
