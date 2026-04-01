@@ -144,9 +144,6 @@ iris-haystack-documentstore/
 │   ├── iris_document_store.py  # DocumentStore principal (Haystack 2.x)
 │   ├── iris_retriever.py       # Retriever semântico customizado
 │   └── example_pipeline.py    # Demonstração: indexação + busca
-│
-└── tests/
-    └── test_document_store.py  # Testes unitários com pytest
 ```
 
 ---
