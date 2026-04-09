@@ -166,13 +166,17 @@ for doc in docs:
 # 7. Embedding retrieval with filter
 # ---------------------------------------------------------------------------
 print("\nSemantic search filtered to 'database' only:")
-result = query_pipeline.run({"embedder": {"text": "features of the platform"}})
-emb = result["embedder"]["embedding"]
+
+text_embedder = SentenceTransformersTextEmbedder(model=MODEL)
+text_embedder.warm_up()
+emb_result = text_embedder.run(text="features of the platform")
+emb = emb_result["embedding"]
+
 filtered = store._embedding_retrieval(
     query_embedding=emb, top_k=3, filters={"category": "database"}
 )
 for i, doc in enumerate(filtered, 1):
     print(f"  {i}. [{doc.score:.4f}] {doc.content[:70]}...")
 
-print("\n✅ Example completed successfully!")
+print("\n Example completed successfully!")
 store.close()
