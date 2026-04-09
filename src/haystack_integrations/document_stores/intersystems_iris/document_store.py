@@ -16,6 +16,8 @@ from haystack import Document, default_from_dict, default_to_dict
 from haystack.document_stores.errors import DocumentStoreError, DuplicateDocumentError
 from haystack.document_stores.types import DuplicatePolicy
 from haystack.utils import Secret, deserialize_secrets_inplace
+#Solução bug
+from haystack.utils.filters import document_matches_filter
 
 logger = logging.getLogger(__name__)
 
@@ -27,80 +29,79 @@ _RETRY_BACKOFF: list[float] = [0.5, 1.0, 2.0]
 # Filter evaluation
 # ---------------------------------------------------------------------------
 
-def _apply_filter(meta: dict[str, Any], filters: dict[str, Any]) -> bool:
-    """
-    Evaluates a Haystack 2.x filter against a document's metadata dict.
+# def _apply_filter(meta: dict[str, Any], filters: dict[str, Any]) -> bool:
+#     """
+#     Evaluates a Haystack 2.x filter against a document's metadata dict.
 
-    Supports both formats:
+#     Supports both formats:
 
-    Legacy (simple equality dict)::
+#     Legacy (simple equality dict)::
 
-        {"category": "db", "year": 2024}
+#         {"category": "db", "year": 2024}
 
-    Official Haystack format (operator/conditions)::
+#     Official Haystack format (operator/conditions)::
 
-        {
-            "operator": "AND",
-            "conditions": [
-                {"field": "meta.category", "operator": "==", "value": "db"},
-                {"field": "meta.year",     "operator": ">=", "value": 2023},
-            ],
-        }
+#         {
+#             "operator": "AND",
+#             "conditions": [
+#                 {"field": "meta.category", "operator": "==", "value": "db"},
+#                 {"field": "meta.year",     "operator": ">=", "value": 2023},
+#             ],
+#         }
 
-    Supported operators: ``==``, ``!=``, ``>``, ``>=``, ``<``, ``<=``,
-    ``in``, ``not in``.
+#     Supported operators: ``==``, ``!=``, ``>``, ``>=``, ``<``, ``<=``,
+#     ``in``, ``not in``.
 
-    Supported logical: ``AND``, ``OR``, ``NOT``.
+#     Supported logical: ``AND``, ``OR``, ``NOT``.
 
-    Args:
-        meta:    Document metadata dictionary.
-        filters: Filter in legacy or Haystack official format.
+#     Args:
+#         meta:    Document metadata dictionary.
+#         filters: Filter in legacy or Haystack official format.
 
-    Returns:
-        ``True`` if the document satisfies the filter, ``False`` otherwise.
+#     Returns:
+#         ``True`` if the document satisfies the filter, ``False`` otherwise.
 
-    Raises:
-        ValueError: On unknown logical or comparison operator.
-    """
-    if not filters:
-        return True
+#     Raises:
+#         ValueError: On unknown logical or comparison operator.
+#     """
+#     if not filters:
+#         return True
 
-    if "operator" in filters and "conditions" in filters:
-        op = filters["operator"].upper()
-        results = [_apply_filter(meta, c) for c in filters["conditions"]]
-        if op == "AND":
-            return all(results)
-        if op == "OR":
-            return any(results)
-        if op == "NOT":
-            return not results[0]
-        raise ValueError(f"Unknown logical operator: '{op}'. Supported: AND, OR, NOT.")
+#     if "operator" in filters and "conditions" in filters:
+#         op = filters["operator"].upper()
+#         results = [_apply_filter(meta, c) for c in filters["conditions"]]
+#         if op == "AND":
+#             return all(results)
+#         if op == "OR":
+#             return any(results)
+#         if op == "NOT":
+#             return not results[0]
+#         raise ValueError(f"Unknown logical operator: '{op}'. Supported: AND, OR, NOT.")
 
-    if "field" in filters:
-        field: str = filters["field"]
-        operator: str = filters.get("operator", "==")
-        value = filters["value"]
-        key = field.removeprefix("meta.") if field.startswith("meta.") else field
-        return _compare(meta.get(key), operator, value)
+#     if "field" in filters:
+#         field: str = filters["field"]
+#         operator: str = filters.get("operator", "==")
+#         value = filters["value"]
+#         key = field.removeprefix("meta.") if field.startswith("meta.") else field
+#         return _compare(meta.get(key), operator, value)
 
-    # Legacy format
-    return all(meta.get(k) == v for k, v in filters.items())
+#     # Legacy format
+#     return all(meta.get(k) == v for k, v in filters.items())
 
 
-def _compare(actual: Any, operator: str, expected: Any) -> bool:
-    try:
-        if operator == "==":     return actual == expected          # noqa: E701
-        if operator == "!=":     return actual != expected          # noqa: E701
-        if operator == ">":      return actual is not None and actual > expected   # noqa: E701
-        if operator == ">=":     return actual is not None and actual >= expected  # noqa: E701
-        if operator == "<":      return actual is not None and actual < expected   # noqa: E701
-        if operator == "<=":     return actual is not None and actual <= expected  # noqa: E701
-        if operator == "in":     return actual in expected          # noqa: E701
-        if operator == "not in": return actual not in expected      # noqa: E701
-    except TypeError:
-        return False
-    raise ValueError(f"Unknown comparison operator: '{operator}'.")
-
+# def _compare(actual: Any, operator: str, expected: Any) -> bool:
+#     try:
+#         if operator == "==":     return actual == expected          # noqa: E701
+#         if operator == "!=":     return actual != expected          # noqa: E701
+#         if operator == ">":      return actual is not None and actual > expected   # noqa: E701
+#         if operator == ">=":     return actual is not None and actual >= expected  # noqa: E701
+#         if operator == "<":      return actual is not None and actual < expected   # noqa: E701
+#         if operator == "<=":     return actual is not None and actual <= expected  # noqa: E701
+#         if operator == "in":     return actual in expected          # noqa: E701
+#         if operator == "not in": return actual not in expected      # noqa: E701
+#     except TypeError:
+#         return False
+#     raise ValueError(f"Unknown comparison operator: '{operator}'.")
 
 # ---------------------------------------------------------------------------
 # In-memory BM25 index
@@ -480,7 +481,8 @@ class IRISDocumentStore:
         docs = [self._row_to_document(row) for row in rows]
         if not filters:
             return docs
-        return [d for d in docs if _apply_filter(d.meta, filters)]
+        #return [d for d in docs if _apply_filter(d.meta, filters)]
+        return [d for d in docs if document_matches_filter(filters, d)]
 
     def write_documents(
         self,
@@ -670,7 +672,9 @@ class IRISDocumentStore:
                 doc = self._row_to_document(row)
                 similarity = float(row[4]) if row[4] is not None else None
                 doc = dataclasses.replace(doc, score=similarity)
-                if filters and not _apply_filter(doc.meta, filters):
+                
+                #if filters and not _apply_filter(doc.meta, filters):
+                if filters and not document_matches_filter(filters, doc):
                     continue
                 docs.append(doc)
                 if len(docs) >= top_k:
