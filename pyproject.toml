@@ -63,6 +63,8 @@ fmt-check = "ruff check {args:.} && ruff format --check {args:.}"
 dependencies = [
     "pytest",
     "pytest-cov",
+    "pytest-asyncio",
+    "python-dotenv",
 ]
 
 [tool.hatch.envs.test.scripts]
@@ -164,13 +166,8 @@ addopts = ["--import-mode=importlib"]
 [tool.hatch.envs.example]
 dependencies = [
     "sentence-transformers",
+    "python-dotenv",
 ]
 
-#.env for example iris
-[tool.hatch.envs.example.env-vars]
-IRIS_CONNECTION_STRING = "localhost:1972/USER"
-IRIS_USERNAME = "_system"
-IRIS_PASSWORD = "SYS"
-
 [tool.hatch.envs.example.scripts]
-run = "python rag_pipeline.py"
+run = "python examples/rag_pipeline.py"
