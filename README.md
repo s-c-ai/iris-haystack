@@ -7,7 +7,7 @@
 
 **A production-ready [Haystack 2.x](https://haystack.deepset.ai/) DocumentStore backed by [InterSystems IRIS](https://www.intersystems.com/products/intersystems-iris/).**
 
-[Installation](#installation) • [Quick Start](#quick-start) • [Features](#features) • [Development](#development) • [Contributing](#contributing)
+[Overview](#overview) • [Installation](#installation) • [Quick Start](#quick-start) • [Features](#features) • [Development](#development) • [Contributing](#contributing)
 
 </div>
 
