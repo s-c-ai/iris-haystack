@@ -14,13 +14,12 @@ This example shows:
 Prerequisites:
     docker-compose up -d
     pip install iris-haystack sentence-transformers
-    export IRIS_CONNECTION_STRING="localhost:1972/USER"
-    export IRIS_USERNAME="_system"
-    export IRIS_PASSWORD="SYS"
+    create a .env file with your IRIS credentials (see .env.example)
 """
 import os
 import sys
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 env_path = Path(__file__).parent.parent / ".env"
@@ -191,8 +190,8 @@ emb_result = text_embedder.run(text="features of the platform")
 emb = emb_result["embedding"]
 
 filtered = store._embedding_retrieval(
-    query_embedding=emb, 
-    top_k=3, 
+    query_embedding=emb,
+    top_k=3,
     filters={"field": "meta.category", "operator": "==", "value": "database"}
 )
 for i, doc in enumerate(filtered, 1):

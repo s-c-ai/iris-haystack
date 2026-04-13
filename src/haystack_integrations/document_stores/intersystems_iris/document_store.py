@@ -592,7 +592,7 @@ class IRISDocumentStore:
                 doc = self._row_to_document(row)
                 similarity = float(row[4]) if row[4] is not None else None
                 doc = dataclasses.replace(doc, score=similarity)
-                
+
                 #if filters and not _apply_filter(doc.meta, filters):
                 if filters and not document_matches_filter(filters, doc):
                     continue
@@ -679,7 +679,7 @@ class IRISDocumentStore:
         )
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "IRISDocumentStore":
+    def from_dict(cls, data: dict[str, Any]) -> IRISDocumentStore:
         """
         Deserialize the store from a dictionary.
 
@@ -751,7 +751,7 @@ class IRISDocumentStore:
                 pass
             logger.debug("IRIS connection closed.")
 
-    def __enter__(self) -> "IRISDocumentStore":
+    def __enter__(self) -> IRISDocumentStore:
         return self
 
     def __exit__(self, *_: Any) -> None:

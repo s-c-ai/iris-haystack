@@ -3,7 +3,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import pytest
+
 from haystack_integrations.document_stores.intersystems_iris import IRISDocumentStore
+
 
 class TestIRISDocumentStoreUnit:
     """Unit tests that do not require a running IRIS instance."""

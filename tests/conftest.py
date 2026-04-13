@@ -4,10 +4,12 @@
 
 import os
 from pathlib import Path
+
 import pytest
-from haystack.utils import Secret
-from haystack_integrations.document_stores.intersystems_iris import IRISDocumentStore
 from dotenv import load_dotenv
+from haystack.utils import Secret
+
+from haystack_integrations.document_stores.intersystems_iris import IRISDocumentStore
 
 env_path = Path(__file__).parent.parent / ".env"
 load_dotenv(dotenv_path=env_path)
@@ -18,7 +20,7 @@ def document_store():
         connection_string=Secret.from_token(os.getenv("IRIS_CONNECTION_STRING", "localhost:1972/USER")),
         username=Secret.from_token(os.getenv("IRIS_USERNAME", "_system")),
         password=Secret.from_token(os.getenv("IRIS_PASSWORD", "SYS")),
-        table_name="HaystackTest768", 
+        table_name="HaystackTest768",
         embedding_dim=768,
     )
     # Clean before test
