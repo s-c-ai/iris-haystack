@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026-present AUTHOR <your@email.com>
+# SPDX-FileCopyrightText: 2026-present Pedro Henrique <pedro@s-c.ai>
 #
 # SPDX-License-Identifier: Apache-2.0
 
@@ -171,3 +171,20 @@ dependencies = [
 
 [tool.hatch.envs.example.scripts]
 run = "python examples/rag_pipeline.py"
+
+[tool.hatch.envs.docs]
+dependencies = [
+    "mkdocs-material>=9.5.0",
+    "mkdocstrings[python]>=0.25.0",
+    "mkdocs-git-revision-date-localized-plugin>=1.2.0",
+    "mkdocs-minify-plugin>=0.8.0",
+    "pymdown-extensions>=10.7",
+    "mike>=2.1.0",
+]
+ 
+[tool.hatch.envs.docs.scripts]
+serve = "mkdocs serve --dev-addr=127.0.0.1:8000"
+#build = "mkdocs build --clean --strict"
+#deploy = "mkdocs gh-deploy --force"
+#version = "mike deploy --push --update-aliases {args}"
+ 
