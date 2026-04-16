@@ -187,21 +187,3 @@ IRIS requires a schema prefix. `SQLUser` is the default namespace schema for use
 ### Why `LONGVARCHAR` for content and meta?
 
 `LONGVARCHAR` is IRIS's variable-length text type without an upper size limit. Documents can be arbitrarily long and metadata can contain many keys — using a fixed-size `VARCHAR(N)` would silently truncate large documents.
-
----
-
-## Namespace package structure
-
-The `src/haystack_integrations/` directory is an **implicit namespace package** (no `__init__.py` at the top level). This allows multiple separately-installed packages to contribute to the same `haystack_integrations` namespace:
-
-```
-# After installing both packages:
-pip install intersystems-iris-haystack
-pip install mongodb-atlas-haystack
-
-# Both are importable under the same namespace:
-from haystack_integrations.document_stores.iris import IRISDocumentStore
-from haystack_integrations.document_stores.mongodb_atlas import MongoDBAtlasDocumentStore
-```
-
-This is the same pattern used by all official Haystack integrations in `haystack-core-integrations`.

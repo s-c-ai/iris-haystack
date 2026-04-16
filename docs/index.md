@@ -89,7 +89,7 @@ Credentials are managed via Haystack [`Secret`](user-guide/credentials.md) — n
 ## Quick install
 
 ```bash
-pip install intersystems-iris-haystack
+pip install #Lib-iris-haystack (development)
 ```
 
 !!! tip "New here?"

@@ -9,7 +9,7 @@ title: Installation
 ## From PyPI (recommended)
 
 ```bash
-pip install intersystems-iris-haystack
+pip install #Lib-iris-haystack (development)
 ```
 
 This installs the core package with two required dependencies:
@@ -28,7 +28,7 @@ This installs the core package with two required dependencies:
 The retrievers require embeddings. The recommended free, local model is `all-MiniLM-L6-v2` via `sentence-transformers`:
 
 ```bash
-pip install "intersystems-iris-haystack[embeddings]"
+pip install #Lib-iris-haystack (development)
 # Equivalent to: pip install sentence-transformers
 ```
 
@@ -39,7 +39,7 @@ You can use any Haystack-compatible embedder — the DocumentStore itself is mod
 For running tests and working on the source code:
 
 ```bash
-pip install "intersystems-iris-haystack[dev]"
+pip install #Lib-iris-haystack (development)
 ```
 
 This adds `pytest`, `pytest-cov`, `pytest-asyncio`, `ruff`, `mypy`, and `python-dotenv`.
@@ -103,7 +103,7 @@ dependencies = [
 ## Upgrading
 
 ```bash
-pip install --upgrade intersystems-iris-haystack
+pip install --upgrade #Lib-iris-haystack (development)
 ```
 
 !!! tip "Check the Changelog"
