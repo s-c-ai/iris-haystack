@@ -49,7 +49,8 @@ jobs:
         run: hatch run fmt-check
 
       - name: Run tests
-        IRIS_CONNECTION_STRING: "127.0.0.1:1972/USER"
-        IRIS_USERNAME: "SuperUser"
-        IRIS_PASSWORD: "SYS"
+        env: 
+          IRIS_CONNECTION_STRING: "127.0.0.1:1972/USER"
+          IRIS_USERNAME: "SuperUser"
+          IRIS_PASSWORD: "SYS"
         run: hatch run test:all
