@@ -68,11 +68,7 @@ class IRISBm25Retriever:
         self.document_store = document_store
         self.filters = filters or {}
         self.top_k = top_k
-        self.filter_policy = (
-            FilterPolicy.from_str(filter_policy)
-            if isinstance(filter_policy, str)
-            else filter_policy
-        )
+        self.filter_policy = FilterPolicy.from_str(filter_policy) if isinstance(filter_policy, str) else filter_policy
 
     @component.output_types(documents=list[Document])
     def run(
@@ -123,7 +119,5 @@ class IRISBm25Retriever:
             data["init_parameters"]["document_store"]
         )
         if "filter_policy" in data["init_parameters"]:
-            data["init_parameters"]["filter_policy"] = FilterPolicy.from_str(
-                data["init_parameters"]["filter_policy"]
-            )
+            data["init_parameters"]["filter_policy"] = FilterPolicy.from_str(data["init_parameters"]["filter_policy"])
         return default_from_dict(cls, data)

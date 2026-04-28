@@ -14,6 +14,7 @@ from haystack_integrations.document_stores.intersystems_iris import IRISDocument
 env_path = Path(__file__).parent.parent / ".env"
 load_dotenv(dotenv_path=env_path)
 
+
 @pytest.fixture()
 def document_store():
     store = IRISDocumentStore(

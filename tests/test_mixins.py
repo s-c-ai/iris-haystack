@@ -19,6 +19,7 @@ class TestCountDocuments(CountDocumentsTest):
     def document_store(self, document_store):
         return document_store
 
+
 @pytest.mark.integration
 class TestWriteDocuments(WriteDocumentsTest):
     @pytest.fixture
@@ -31,6 +32,7 @@ class TestWriteDocuments(WriteDocumentsTest):
 
         with pytest.raises(DuplicateDocumentError):
             document_store.write_documents(docs)
+
 
 @pytest.mark.integration
 class TestFilterDocuments(FilterDocumentsTest):
@@ -52,6 +54,7 @@ class TestFilterDocuments(FilterDocumentsTest):
             assert r.id == e.id
             assert r.content == e.content
             assert r.meta == e.meta
+
 
 @pytest.mark.integration
 class TestDeleteDocuments(DeleteDocumentsTest):

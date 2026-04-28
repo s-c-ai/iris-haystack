@@ -16,6 +16,7 @@ Prerequisites:
     pip install iris-haystack sentence-transformers
     create a .env file with your IRIS credentials (see .env.example)
 """
+
 import os
 import sys
 from pathlib import Path
@@ -105,9 +106,7 @@ print("=" * 60)
 
 query_pipeline = Pipeline()
 query_pipeline.add_component("embedder", SentenceTransformersTextEmbedder(model=MODEL))
-query_pipeline.add_component(
-    "retriever", IRISEmbeddingRetriever(document_store=store, top_k=3)
-)
+query_pipeline.add_component("retriever", IRISEmbeddingRetriever(document_store=store, top_k=3))
 query_pipeline.connect("embedder.embedding", "retriever.query_embedding")
 
 for query in [
@@ -157,24 +156,28 @@ print("FILTERS — OFFICIAL HAYSTACK FORMAT (operator/conditions)")
 print("=" * 60)
 
 print("\nAND: category == framework AND year >= 2024:")
-docs = store.filter_documents({
-    "operator": "AND",
-    "conditions": [
-        {"field": "meta.category", "operator": "==", "value": "framework"},
-        {"field": "meta.year",     "operator": ">=", "value": 2024},
-    ],
-})
+docs = store.filter_documents(
+    {
+        "operator": "AND",
+        "conditions": [
+            {"field": "meta.category", "operator": "==", "value": "framework"},
+            {"field": "meta.year", "operator": ">=", "value": 2024},
+        ],
+    }
+)
 for doc in docs:
     print(f"  - {doc.content[:70]}...")
 
 print("\nOR: category == database OR category == concept:")
-docs = store.filter_documents({
-    "operator": "OR",
-    "conditions": [
-        {"field": "meta.category", "operator": "==", "value": "database"},
-        {"field": "meta.category", "operator": "==", "value": "concept"},
-    ],
-})
+docs = store.filter_documents(
+    {
+        "operator": "OR",
+        "conditions": [
+            {"field": "meta.category", "operator": "==", "value": "database"},
+            {"field": "meta.category", "operator": "==", "value": "concept"},
+        ],
+    }
+)
 for doc in docs:
     print(f"  - {doc.content[:70]}...")
 
@@ -189,9 +192,7 @@ emb_result = text_embedder.run(text="features of the platform")
 emb = emb_result["embedding"]
 
 filtered = store._embedding_retrieval(
-    query_embedding=emb,
-    top_k=3,
-    filters={"field": "meta.category", "operator": "==", "value": "database"}
+    query_embedding=emb, top_k=3, filters={"field": "meta.category", "operator": "==", "value": "database"}
 )
 for i, doc in enumerate(filtered, 1):
     print(f"  {i}. [{doc.score:.4f}] {doc.content[:70]}...")

@@ -27,6 +27,7 @@ _RETRY_BACKOFF: list[float] = [0.5, 1.0, 2.0]
 # In-memory BM25 index
 # ---------------------------------------------------------------------------
 
+
 class _BM25Index:
     """
     In-memory Okapi BM25 index built over IRIS documents.
@@ -95,9 +96,7 @@ class _BM25Index:
                 if df == 0:
                     continue
                 idf = math.log((n - df + 0.5) / (df + 0.5) + 1)
-                score += idf * tf * (self.k1 + 1) / (
-                    tf + self.k1 * (1 - self.b + self.b * dl / self._avg_dl)
-                )
+                score += idf * tf * (self.k1 + 1) / (tf + self.k1 * (1 - self.b + self.b * dl / self._avg_dl))
             scores.append(score)
         ranked = sorted(enumerate(scores), key=lambda x: x[1], reverse=True)
         return [(self._docs[i][0], s) for i, s in ranked[:top_k] if s > 0]
@@ -111,6 +110,7 @@ class _BM25Index:
 # ---------------------------------------------------------------------------
 # IRISDocumentStore
 # ---------------------------------------------------------------------------
+
 
 class IRISDocumentStore:
     """
@@ -250,13 +250,13 @@ class IRISDocumentStore:
                 last_exc = exc
                 logger.warning(
                     "IRIS connection failed (attempt %d/%d): %s. Retrying in %.1fs...",
-                    attempt, _MAX_RETRIES, exc, wait,
+                    attempt,
+                    _MAX_RETRIES,
+                    exc,
+                    wait,
                 )
                 time.sleep(wait)
-        msg = (
-            f"Could not connect to IRIS at '{conn_str}' after "
-            f"{_MAX_RETRIES} attempts. Last error: {last_exc}"
-        )
+        msg = f"Could not connect to IRIS at '{conn_str}' after {_MAX_RETRIES} attempts. Last error: {last_exc}"
         raise ConnectionError(msg) from last_exc
 
     def _ensure_connection(self) -> None:
@@ -269,7 +269,7 @@ class IRISDocumentStore:
             logger.warning("IRIS connection lost — reconnecting...")
             self._connect_with_retry()
 
-    def _cursor(self) -> Any: # noqa: ANN401
+    def _cursor(self) -> Any:  # noqa: ANN401
         self._ensure_connection()
         return self._conn.cursor()
 
@@ -334,7 +334,7 @@ class IRISDocumentStore:
         """
         cur = self._cursor()
         try:
-            cur.execute(f"SELECT COUNT(*) FROM SQLUser.{self.table_name}") # noqa: S608
+            cur.execute(f"SELECT COUNT(*) FROM SQLUser.{self.table_name}")  # noqa: S608
             row = cur.fetchone()
             return int(row[0]) if row else 0
         finally:
@@ -391,7 +391,7 @@ class IRISDocumentStore:
         cur = self._cursor()
         try:
             cur.execute(
-                f"SELECT id, content, meta, score " # noqa: S608
+                f"SELECT id, content, meta, score "  # noqa: S608
                 f"FROM SQLUser.{self.table_name}"
             )
             rows = cur.fetchall()
@@ -401,7 +401,7 @@ class IRISDocumentStore:
         docs = [self._row_to_document(row) for row in rows]
         if not filters:
             return docs
-        #return [d for d in docs if _apply_filter(d.meta, filters)]
+        # return [d for d in docs if _apply_filter(d.meta, filters)]
         return [d for d in docs if document_matches_filter(filters, d)]
 
     def write_documents(
@@ -463,16 +463,13 @@ class IRISDocumentStore:
                 existing = self._get_by_id(doc.id, cur)
                 if existing:
                     if policy == DuplicatePolicy.FAIL:
-                        msg = (
-                            f"Document with id '{doc.id}' already exists. "
-                            "Use DuplicatePolicy.SKIP or OVERWRITE."
-                        )
+                        msg = f"Document with id '{doc.id}' already exists. Use DuplicatePolicy.SKIP or OVERWRITE."
                         raise DuplicateDocumentError(msg)
                     if policy == DuplicatePolicy.SKIP:
                         logger.debug("Skipping duplicate document: %s", doc.id)
                         continue
                     cur.execute(
-                        f"DELETE FROM SQLUser.{self.table_name} WHERE id = ?", # noqa: S608
+                        f"DELETE FROM SQLUser.{self.table_name} WHERE id = ?",  # noqa: S608
                         [doc.id],
                     )
 
@@ -481,14 +478,14 @@ class IRISDocumentStore:
 
                 if emb_str:
                     cur.execute(
-                        f"INSERT INTO SQLUser.{self.table_name} " # noqa: S608
+                        f"INSERT INTO SQLUser.{self.table_name} "  # noqa: S608
                         f"(id, content, meta, score, embedding) "
                         f"VALUES (?, ?, ?, ?, TO_VECTOR(?, DOUBLE))",
                         [doc.id, doc.content or "", meta_str, doc.score, emb_str],
                     )
                 else:
                     cur.execute(
-                        f"INSERT INTO SQLUser.{self.table_name} " # noqa: S608
+                        f"INSERT INTO SQLUser.{self.table_name} "  # noqa: S608
                         f"(id, content, meta, score) VALUES (?, ?, ?, ?)",
                         [doc.id, doc.content or "", meta_str, doc.score],
                     )
@@ -525,7 +522,7 @@ class IRISDocumentStore:
         cur = self._cursor()
         try:
             cur.execute(
-                f"DELETE FROM SQLUser.{self.table_name} " # noqa: S608
+                f"DELETE FROM SQLUser.{self.table_name} "  # noqa: S608
                 f"WHERE id IN ({placeholders})",
                 document_ids,
             )
@@ -579,7 +576,7 @@ class IRISDocumentStore:
 
         fetch_k = top_k * 4 if filters else top_k
         sql = (
-            f"SELECT TOP ? id, content, meta, score, " # noqa: S608
+            f"SELECT TOP ? id, content, meta, score, "  # noqa: S608
             f"VECTOR_COSINE(embedding, TO_VECTOR(?, DOUBLE)) AS similarity "
             f"FROM SQLUser.{self.table_name} "
             f"WHERE embedding IS NOT NULL "
@@ -594,7 +591,7 @@ class IRISDocumentStore:
                 similarity = float(row[4]) if row[4] is not None else None
                 doc = dataclasses.replace(doc, score=similarity)
 
-                #if filters and not _apply_filter(doc.meta, filters):
+                # if filters and not _apply_filter(doc.meta, filters):
                 if filters and not document_matches_filter(filters, doc):
                     continue
                 docs.append(doc)
@@ -640,10 +637,7 @@ class IRISDocumentStore:
             return []
         self._bm25.build([(d.id, d.content or "") for d in candidates])
         doc_map = {d.id: d for d in candidates}
-        return [
-            dataclasses.replace(doc_map[doc_id], score=score)
-            for doc_id, score in self._bm25.query(query, top_k)
-        ]
+        return [dataclasses.replace(doc_map[doc_id], score=score) for doc_id, score in self._bm25.query(query, top_k)]
 
     # ------------------------------------------------------------------
     # Serialization
@@ -706,10 +700,11 @@ class IRISDocumentStore:
     # Helpers
     # ------------------------------------------------------------------
 
-    def _get_by_id(self, doc_id: str, cur: Any = None) -> Any: # noqa: ANN401
+    def _get_by_id(self, doc_id: str, cur: Any = None) -> Any:  # noqa: ANN401
         _cur = cur or self._cursor()
         _cur.execute(
-            f"SELECT id FROM SQLUser.{self.table_name} WHERE id = ?", [doc_id] # noqa: S608
+            f"SELECT id FROM SQLUser.{self.table_name} WHERE id = ?",
+            [doc_id],  # noqa: S608
         )
         return _cur.fetchone()
 
@@ -725,7 +720,7 @@ class IRISDocumentStore:
         return "[" + ",".join(f"{v:.8f}" for v in embedding) + "]"
 
     @staticmethod
-    def _row_to_document(row: Any) -> Document: # noqa: ANN401
+    def _row_to_document(row: Any) -> Document:  # noqa: ANN401
         """
         Convert a DB-API row (id, content, meta, score, ...) to a Document.
 
@@ -749,7 +744,7 @@ class IRISDocumentStore:
         if self._conn:
             try:
                 self._conn.close()
-            except Exception: # noqa: S110
+            except Exception:  # noqa: S110
                 pass
             logger.debug("IRIS connection closed.")
 
@@ -760,8 +755,4 @@ class IRISDocumentStore:
         self.close()
 
     def __repr__(self) -> str:
-        return (
-            f"IRISDocumentStore("
-            f"table={self.table_name!r}, "
-            f"embedding_dim={self.embedding_dim})"
-        )
+        return f"IRISDocumentStore(table={self.table_name!r}, embedding_dim={self.embedding_dim})"
