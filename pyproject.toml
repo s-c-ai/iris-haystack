@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026-present Pedro Henrique <pedro@s-c.ai>
+# SPDX-FileCopyrightText: 2026-present ScientifiCloud <contato@s-c.ai>
 #
 # SPDX-License-Identifier: Apache-2.0
 
@@ -19,7 +19,7 @@ keywords = [
     "intersystems-iris"
 ]
 authors = [
-    { name = "Pedro Henrique", email = "pedro@s-c.ai" },
+    { name = "ScientifiCloud", email = "contato@s-c.ai" },
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
