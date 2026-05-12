@@ -40,8 +40,8 @@ theme:
     text: Inter
     code: JetBrains Mono
 
-  logo: assets/logo.svg
-  favicon: assets/logo.svg
+  #logo: assets/logo.svg
+  #favicon: assets/logo.svg
 
   features:
     # Navigation
@@ -106,8 +106,6 @@ nav:
   - Contributing:
     - contributing/index.md
     - How to Contribute: contributing/how-to-contribute.md
-    - Publishing to PyPI: contributing/pypi.md
-    - Haystack Integration PR: contributing/haystack-pr.md
 
   - Changelog: changelog.md
 
