@@ -1,0 +1,33 @@
+# SPDX-FileCopyrightText: 2026-present ScientifiCloud <contato@s-c.ai>
+#
+# SPDX-License-Identifier: Apache-2.0
+
+name: Deploy Documentation
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install hatch
+          hatch env create docs
+
+      - name: Deploy MkDocs
+        run: hatch run docs:mkdocs gh-deploy --force

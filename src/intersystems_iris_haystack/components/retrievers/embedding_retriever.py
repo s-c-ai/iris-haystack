@@ -8,7 +8,7 @@ from haystack import Document, component, default_from_dict, default_to_dict
 from haystack.document_stores.types import FilterPolicy
 from haystack.document_stores.types.filter_policy import apply_filter_policy
 
-from haystack_integrations.document_stores.intersystems_iris import IRISDocumentStore
+from intersystems_iris_haystack.document_stores import IRISDocumentStore
 
 
 @component
@@ -26,8 +26,8 @@ class IRISEmbeddingRetriever:
 
         from haystack import Pipeline
         from haystack.components.embedders import SentenceTransformersTextEmbedder
-        from haystack_integrations.document_stores.iris import IRISDocumentStore
-        from haystack_integrations.components.retrievers.iris import IRISEmbeddingRetriever
+        from intersystems_iris_haystack.document_stores import IRISDocumentStore
+        from intersystems_iris_haystack.components.retrievers import IRISEmbeddingRetriever
 
         store = IRISDocumentStore()
         pipeline = Pipeline()
