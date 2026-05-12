@@ -36,8 +36,8 @@ Documents without an embedding are automatically excluded by the `WHERE embeddin
 ### Standalone
 
 ```python
-from haystack_integrations.document_stores.iris import IRISDocumentStore
-from haystack_integrations.components.retrievers.iris import IRISEmbeddingRetriever
+from intersystems_iris_haystack.document_stores import IRISDocumentStore
+from intersystems_iris_haystack.components.retrievers import IRISEmbeddingRetriever
 
 store = IRISDocumentStore(embedding_dim=384)
 retriever = IRISEmbeddingRetriever(document_store=store, top_k=5)
@@ -54,7 +54,7 @@ for doc in result["documents"]:
 ```python
 from haystack import Pipeline
 from haystack.components.embedders import SentenceTransformersTextEmbedder
-from haystack_integrations.components.retrievers.iris import IRISEmbeddingRetriever
+from intersystems_iris_haystack.components.retrievers import IRISEmbeddingRetriever
 
 pipeline = Pipeline()
 pipeline.add_component(

@@ -12,17 +12,15 @@ This page explains the internal design of `iris-haystack`: how components are or
 
 ```
 iris-haystack/
-└── src/haystack_integrations/
+└── src/intersystems_iris_haystack/
     ├── document_stores/
-    │   └── iris/
     │       ├── __init__.py          ← public re-exports
     │       └── document_store.py   ← IRISDocumentStore + _BM25Index
     └── components/
         └── retrievers/
-            └── iris/
-                ├── __init__.py           ← public re-exports
-                ├── embedding_retriever.py
-                └── bm25_retriever.py
+            ├── __init__.py           ← public re-exports
+            ├── embedding_retriever.py
+            └── bm25_retriever.py
 ```
 
 The `haystack_integrations` namespace is **shared** across all Haystack integrations. Any integration installed in the same virtualenv contributes its modules under this namespace — it is a [PEP 420 implicit namespace package](https://peps.python.org/pep-0420/).

@@ -30,11 +30,11 @@ from haystack.components.embedders import (
 from haystack.components.writers import DocumentWriter
 from haystack.document_stores.types import DuplicatePolicy
 
-from haystack_integrations.components.retrievers.intersystems_iris import (
+from intersystems_iris_haystack.components.retrievers import (
     IRISBm25Retriever,
     IRISEmbeddingRetriever,
 )
-from haystack_integrations.document_stores.intersystems_iris import IRISDocumentStore
+from intersystems_iris_haystack.document_stores import IRISDocumentStore
 
 env_path = Path(__file__).parent.parent / ".env"
 load = load_dotenv(dotenv_path=env_path)

@@ -52,7 +52,7 @@ pytest tests/ -m "integration" -v
 pytest tests/ -v
 
 # With coverage
-pytest tests/ --cov=haystack_integrations --cov-report=term-missing -v
+pytest tests/ --cov=intersystems_iris_haystack --cov-report=term-missing -v
 ```
 
 ---

@@ -30,8 +30,8 @@ For `IRISDocumentStore`, credentials are handled specially:
 ```python
 from haystack import Pipeline
 from haystack.components.embedders import SentenceTransformersTextEmbedder
-from haystack_integrations.document_stores.iris import IRISDocumentStore
-from haystack_integrations.components.retrievers.iris import IRISEmbeddingRetriever
+from intersystems_iris_haystack.document_stores import IRISDocumentStore
+from intersystems_iris_haystack.components.retrievers import IRISEmbeddingRetriever
 
 store = IRISDocumentStore(embedding_dim=384)
 
@@ -83,10 +83,10 @@ components:
               - IRIS_USERNAME
             strict: true
             type: env_var
-        type: haystack_integrations.document_stores.iris.document_store.IRISDocumentStore
+        type: intersystems_iris_haystack.document_stores.document_store.IRISDocumentStore
       filter_policy: replace
       top_k: 5
-    type: haystack_integrations.components.retrievers.iris.embedding_retriever.IRISEmbeddingRetriever
+    type: intersystems_iris_haystack.components.retrievers.embedding_retriever.IRISEmbeddingRetriever
 
 connections:
   - receiver: retriever.query_embedding
@@ -120,7 +120,7 @@ result = pipeline.run({"embedder": {"text": "what is vector search?"}})
 ## BM25 pipeline example
 
 ```python
-from haystack_integrations.components.retrievers.iris import IRISBm25Retriever
+from intersystems_iris_haystack.components.retrievers import IRISBm25Retriever
 
 bm25_pipeline = Pipeline()
 bm25_pipeline.add_component(

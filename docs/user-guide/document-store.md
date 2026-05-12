@@ -21,7 +21,7 @@ export IRIS_PASSWORD="SYS"
 ```
 
 ```python
-from haystack_integrations.document_stores.iris import IRISDocumentStore
+from intersystems_iris_haystack.document_stores import IRISDocumentStore
 
 store = IRISDocumentStore(embedding_dim=384)
 print(store)
@@ -258,7 +258,7 @@ The store is fully serializable for use in Haystack YAML pipelines:
 # Serialize
 d = store.to_dict()
 print(d["type"])
-# haystack_integrations.document_stores.iris.document_store.IRISDocumentStore
+# intersystems_iris_haystack.document_stores.document_store.IRISDocumentStore
 print("password" in d["init_parameters"])
 # False — password is never serialized
 

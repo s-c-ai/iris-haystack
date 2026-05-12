@@ -135,7 +135,7 @@ class IRISDocumentStore:
 
     .. code-block:: python
 
-        from haystack_integrations.document_stores.iris import IRISDocumentStore
+        from intersystems_iris_haystack.document_stores import IRISDocumentStore
         store = IRISDocumentStore()
 
     **Retrievers**
@@ -144,7 +144,7 @@ class IRISDocumentStore:
 
     .. code-block:: python
 
-        from haystack_integrations.components.retrievers.iris import (
+        from intersystems_iris_haystack.components.retrievers import (
             IRISEmbeddingRetriever,
             IRISBm25Retriever,
         )
@@ -659,7 +659,7 @@ class IRISDocumentStore:
         -------
         >>> d = store.to_dict()
         >>> d["type"]
-        'haystack_integrations.document_stores.iris.document_store.IRISDocumentStore'
+        'intersystems_iris_haystack.document_stores.document_store.IRISDocumentStore'
         """
         return default_to_dict(
             self,

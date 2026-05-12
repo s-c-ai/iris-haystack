@@ -161,7 +161,7 @@ store.filter_documents({
 Both retrievers accept the same filter format via `filters` at init time and at `run()` time:
 
 ```python
-from haystack_integrations.components.retrievers.iris import IRISEmbeddingRetriever
+from intersystems_iris_haystack.components.retrievers import IRISEmbeddingRetriever
 from haystack.document_stores.types import FilterPolicy
 
 retriever = IRISEmbeddingRetriever(

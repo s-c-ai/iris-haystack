@@ -45,10 +45,10 @@ Issues = "https://github.com/s-c-ai/iris-haystack/issues"
 Source = "https://github.com/s-c-ai/iris-haystack"
 
 [tool.hatch.version]
-path = "src/haystack_integrations/__about__.py"
+path = "src/intersystems_iris_haystack/__about__.py"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/haystack_integrations"]
+packages = ["src/intersystems_iris_haystack"]
 
 [tool.hatch.envs.default]
 installer = "uv"
@@ -57,7 +57,7 @@ dependencies = ["ruff"]
 [tool.hatch.envs.default.scripts]
 fmt = "ruff check --fix {args:.} && ruff format {args:.}"
 fmt-check = "ruff check {args:.} && ruff format --check {args:.}"
-type-check = "mypy src/haystack_integrations tests"
+type-check = "mypy src/intersystems_iris_haystack tests"
 
 [tool.hatch.envs.test]
 dependencies = [
@@ -71,7 +71,7 @@ dependencies = [
 unit = 'pytest -m "not integration" {args:tests}'
 integration = 'pytest -m "integration" {args:tests}'
 all = "pytest {args:tests}"
-cov = "pytest --cov=haystack_integrations {args:tests}"
+cov = "pytest --cov=intersystems_iris_haystack {args:tests}"
 
 [tool.ruff]
 line-length = 120
@@ -124,7 +124,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["haystack_integrations"]
+known-first-party = ["intersystems_iris_haystack"]
 
 [tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "parents"
@@ -146,7 +146,7 @@ module = ["haystack.*"]
 ignore_missing_imports = true
 
 [tool.coverage.run]
-source = ["haystack_integrations"]
+source = ["intersystems_iris_haystack"]
 branch = true
 parallel = false
 
@@ -184,7 +184,7 @@ dependencies = [
  
 [tool.hatch.envs.docs.scripts]
 serve = "mkdocs serve --dev-addr=127.0.0.1:8000"
-#build = "mkdocs build --clean --strict"
+build = "mkdocs build --clean --strict"
 #deploy = "mkdocs gh-deploy --force"
 #version = "mike deploy --push --update-aliases {args}"
  

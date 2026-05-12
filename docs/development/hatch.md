@@ -67,12 +67,12 @@ build-backend = "hatchling.build"
 
 ```toml
 [tool.hatch.version]
-path = "src/haystack_integrations/__about__.py"  # (1)
+path = "src/intersystems_iris_haystack/__about__.py"  # (1)
 ```
 
 1. The version is read from the `__version__` variable in `__about__.py`. To change the version, edit that file. Do **not** set `version` in `[project]` directly — it is declared as `dynamic = ["version"]` instead.
 
-```python title="src/haystack_integrations/__about__.py"
+```python title="src/intersystems_iris_haystack/__about__.py"
 __version__ = "1.0.0"
 ```
 
@@ -80,10 +80,10 @@ __version__ = "1.0.0"
 
 ```toml
 [tool.hatch.build.targets.wheel]
-packages = ["src/haystack_integrations"]  # (1)
+packages = ["src/intersystems_iris_haystack"]  # (1)
 ```
 
-1. Only the `haystack_integrations` namespace package is included in the wheel. Tests, examples, and docs are excluded from the published package.
+1. Only the `intersystems_iris_haystack` namespace package is included in the wheel. Tests, examples, and docs are excluded from the published package.
 
 ---
 
@@ -114,7 +114,7 @@ dependencies = ["ruff"]    # (2)
 [tool.hatch.envs.default.scripts]
 fmt       = "ruff check --fix {args:.} && ruff format {args:.}"
 fmt-check = "ruff check {args:.} && ruff format --check {args:.}"
-type-check = "mypy src/haystack_integrations tests"
+type-check = "mypy src/intersystems_iris_haystack tests"
 ```
 
 **Examples:**
@@ -130,7 +130,7 @@ hatch run fmt-check
 hatch run type-check
 
 # Lint a specific file
-hatch run fmt src/haystack_integrations/document_stores/iris/document_store.py
+hatch run fmt src/intersystems_iris_haystack/document_stores/document_store.py
 ```
 
 ---
@@ -176,7 +176,7 @@ dependencies = [
 unit        = 'pytest -m "not integration" {args:tests}'
 integration = 'pytest -m "integration" {args:tests}'
 all         = "pytest {args:tests}"
-cov         = "pytest --cov=haystack_integrations {args:tests}"
+cov         = "pytest --cov=intersystems_iris_haystack {args:tests}"
 ```
 
 **Examples:**
@@ -327,7 +327,7 @@ ignore_missing_imports = true  # haystack ships its own stubs
 
 ```toml
 [tool.coverage.run]
-source   = ["haystack_integrations"]
+source   = ["intersystems_iris_haystack"]
 branch   = true    # measure branch coverage (if/else paths)
 parallel = false
 

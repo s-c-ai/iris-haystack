@@ -4,7 +4,7 @@
 
 import pytest
 
-from haystack_integrations.document_stores.intersystems_iris import IRISDocumentStore
+from intersystems_iris_haystack.document_stores import IRISDocumentStore
 
 
 class TestIRISDocumentStoreUnit:

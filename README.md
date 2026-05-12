@@ -1,15 +1,84 @@
-# intersystems-iris-haystack
+<h1 align="center">intersystems-iris-haystack</h1>
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
-[![Haystack 2.x](https://img.shields.io/badge/Haystack-2.x-orange)](https://haystack.deepset.ai/)
+[![Haystack](https://img.shields.io/pypi/v/haystack-ai.svg?label=haystack)](https://pypi.org/project/haystack-ai/)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3120/)
+[![PyPI - Version](https://img.shields.io/pypi/v/intersystems-iris-haystack.svg)](https://pypi.org/project/intersystems-iris-haystack/)
+[![Tests](https://github.com/s-c-ai/iris-haystack/actions/workflows/test.yml/badge.svg)](https://github.com/s-c-ai/iris-haystack/actions)
 
-A [Haystack 2.x](https://haystack.deepset.ai/) `DocumentStore` backed by [InterSystems IRIS](https://www.intersystems.com/products/intersystems-iris/) — native vector search via `VECTOR_COSINE`, keyword search via Okapi BM25, and full Haystack filter protocol support.
+
+## Table of Contents
+- [Overview](#overview)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Documentation](#documentation)
+- [License](#license)
+
 
 ---
 
+## Overview
+
+An integration of **InterSystems IRIS** database with [Haystack 2.x](https://haystack.deepset.ai/) by deepset. In IRIS, the native `VECTOR(DOUBLE, N)` type is used for storing document embeddings, and the `VECTOR_COSINE` function enables high-performance dense retrievals using SIMD operations.
+
+The library allows using InterSystems IRIS as a DocumentStore, implementing the required Protocol methods. You can start working with the implementation by importing it from the package:
+
+```python
+from intersystems_iris_haystack.document_stores import IRISDocumentStore
+```
+
+In addition to the IRISDocumentStore, the library includes the following Haystack components which can be used in a pipeline:
+
+- IRISEmbeddingRetriever - A component used to query the vector store and find semantically related Documents. It uses VECTOR_COSINE natively in the database.
+
+- IRISBm25Retriever - A keyword-based retriever that implements Okapi BM25 over the stored documents.
+
+The `intersystems-iris-haystack` library uses the official intersystems-iris Python Driver to interact with the database and hides all SQL complexities under the hood.
+
+```plaintext
+                                   +-----------------------------+
+                                   |   InterSystems IRIS DB      |
+                                   +-----------------------------+
+                                   |                             |
+                                   |      +----------------+     |
+                                   |      |  document_table|     |
+                write_documents    |      +----------------+     |
+          +------------------------+----->|  id (VARCHAR)  |     |
+          |                        |      |  content (CLOB)|     |
++---------+----------+             |      |  meta (JSON)   |     |
+|                    |             |      |  embedding     |     |
+| IRISDocumentStore  |             |      +--------+-------+     |
+|                    |             |               |             |
++---------+----------+             |               |             |
+          |                        |               |             |
+          |                        |      +--------+--------+    |
+          |                        |      | VECTOR_COSINE   |    |
+          +----------------------->|      | SIMD execution  |    |
+               query_embeddings    |      +-----------------+    |
+                                   |                             |
+                                   +-----------------------------+
+
+```
+In the above diagram:
+
+- Documents are stored as rows in a dedicated relational table.
+- Meta properties are stored as natively queryable JSON.
+- embedding is stored as a VECTOR column type.
+- Retrievals are executed by the database engine directly, eliminating the need for an external vector database.
+
 ## Installation
 
-**Requires:** Python 3.10+, a running InterSystems IRIS instance.
+Install the integration via pip:
+
+```bash
+pip install intersystems-iris-haystack
+```
+
+Note: For the examples below, you will also need an embedder like sentence-transformers.
+
+**Requires:** Python 3.10+ (Recommended/Tested on 3.12) and a running InterSystems IRIS instance.
+
+### Running InterSystems IRIS
 
 Start IRIS locally with Docker:
 
@@ -52,8 +121,8 @@ from haystack.components.embedders import (
 from haystack.components.writers import DocumentWriter
 from haystack.document_stores.types import DuplicatePolicy
 
-from haystack_integrations.document_stores.iris import IRISDocumentStore
-from haystack_integrations.components.retrievers.iris import (
+from intersystems_iris_haystack.document_stores import IRISDocumentStore
+from intersystems_iris_haystack.components.retrievers import (
     IRISEmbeddingRetriever,
     IRISBm25Retriever,
 )

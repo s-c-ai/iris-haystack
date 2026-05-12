@@ -31,8 +31,8 @@ from haystack.components.embedders import (
 from haystack.components.writers import DocumentWriter
 from haystack.document_stores.types import DuplicatePolicy
 
-from haystack_integrations.document_stores.iris import IRISDocumentStore
-from haystack_integrations.components.retrievers.iris import (
+from intersystems_iris_haystack.document_stores import IRISDocumentStore
+from intersystems_iris_haystack.components.retrievers import (
     IRISBm25Retriever,
     IRISEmbeddingRetriever,
 )

@@ -9,7 +9,7 @@ import pytest
 from dotenv import load_dotenv
 from haystack.utils import Secret
 
-from haystack_integrations.document_stores.intersystems_iris import IRISDocumentStore
+from intersystems_iris_haystack.document_stores import IRISDocumentStore
 
 env_path = Path(__file__).parent.parent / ".env"
 load_dotenv(dotenv_path=env_path)
