@@ -35,7 +35,7 @@ export IRIS_PASSWORD="SYS"
 Then create the store without any credential arguments — the defaults read from env vars:
 
 ```python
-from haystack_integrations.document_stores.iris import IRISDocumentStore
+from intersystems_iris_haystack.document_stores import IRISDocumentStore
 
 store = IRISDocumentStore(embedding_dim=384)
 # Credentials resolved from environment at connection time
@@ -61,7 +61,7 @@ Load it before instantiating the store:
 from dotenv import load_dotenv
 load_dotenv()
 
-from haystack_integrations.document_stores.iris import IRISDocumentStore
+from intersystems_iris_haystack.document_stores import IRISDocumentStore
 store = IRISDocumentStore(embedding_dim=384)
 ```
 
@@ -79,7 +79,7 @@ For unit tests or one-off scripts where env vars are inconvenient:
 
 ```python
 from haystack.utils import Secret
-from haystack_integrations.document_stores.iris import IRISDocumentStore
+from intersystems_iris_haystack.document_stores import IRISDocumentStore
 
 store = IRISDocumentStore(
     connection_string=Secret.from_token("localhost:1972/USER"),
@@ -187,7 +187,7 @@ For production deployments, inject credentials via your secrets manager:
     os.environ["IRIS_USERNAME"] = creds["username"]
     os.environ["IRIS_PASSWORD"] = creds["password"]
 
-    from haystack_integrations.document_stores.iris import IRISDocumentStore
+    from intersystems_iris_haystack.document_stores import IRISDocumentStore
     store = IRISDocumentStore(embedding_dim=384)
     ```
 

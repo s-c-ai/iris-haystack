@@ -9,7 +9,7 @@ title: Installation
 ## From PyPI (recommended)
 
 ```bash
-pip install #Lib-iris-haystack (development)
+pip install intersystems-iris-haystack
 ```
 
 This installs the core package with two required dependencies:
@@ -28,8 +28,7 @@ This installs the core package with two required dependencies:
 The retrievers require embeddings. The recommended free, local model is `all-MiniLM-L6-v2` via `sentence-transformers`:
 
 ```bash
-pip install #Lib-iris-haystack (development)
-# Equivalent to: pip install sentence-transformers
+pip install sentence-transformers
 ```
 
 You can use any Haystack-compatible embedder — the DocumentStore itself is model-agnostic.
@@ -39,7 +38,7 @@ You can use any Haystack-compatible embedder — the DocumentStore itself is mod
 For running tests and working on the source code:
 
 ```bash
-pip install #Lib-iris-haystack (development)
+pip install intersystems-iris-haystack
 ```
 
 This adds `pytest`, `pytest-cov`, `pytest-asyncio`, `ruff`, `mypy`, and `python-dotenv`.
@@ -72,12 +71,12 @@ See [Development Setup](../development/hatch.md) for a full breakdown of all hat
 ## Verify the installation
 
 ```python
-from haystack_integrations.document_stores.iris import IRISDocumentStore
-from haystack_integrations.components.retrievers.iris import (
+from intersystems_iris_haystack.document_stores import IRISDocumentStore
+from intersystems_iris_haystack.components.retrievers import (
     IRISEmbeddingRetriever,
     IRISBm25Retriever,
 )
-print("iris-haystack installed correctly ✓")
+print("iris-haystack installed correctly")
 ```
 
 ---
@@ -103,7 +102,7 @@ dependencies = [
 ## Upgrading
 
 ```bash
-pip install --upgrade #Lib-iris-haystack (development)
+pip install --upgrade intersystems-iris-haystack
 ```
 
 !!! tip "Check the Changelog"

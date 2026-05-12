@@ -48,7 +48,7 @@ hide:
 
 ```python
 from haystack import Document
-from haystack_integrations.document_stores.iris import IRISDocumentStore
+from intersystems_iris_haystack.document_stores import IRISDocumentStore
 
 store = IRISDocumentStore(embedding_dim=384)
 
@@ -89,7 +89,7 @@ Credentials are managed via Haystack [`Secret`](user-guide/credentials.md) — n
 ## Quick install
 
 ```bash
-pip install #Lib-iris-haystack (development)
+pip install intersystems-iris-haystack
 ```
 
 !!! tip "New here?"

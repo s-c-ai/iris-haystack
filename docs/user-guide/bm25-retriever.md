@@ -49,8 +49,8 @@ Where:
 ### Standalone
 
 ```python
-from haystack_integrations.document_stores.iris import IRISDocumentStore
-from haystack_integrations.components.retrievers.iris import IRISBm25Retriever
+from intersystems_iris_haystack.document_stores import IRISDocumentStore
+from intersystems_iris_haystack.components.retrievers import IRISBm25Retriever
 
 store = IRISDocumentStore(embedding_dim=384)
 retriever = IRISBm25Retriever(document_store=store, top_k=5)
@@ -64,7 +64,7 @@ for doc in result["documents"]:
 
 ```python
 from haystack import Pipeline
-from haystack_integrations.components.retrievers.iris import IRISBm25Retriever
+from intersystems_iris_haystack.components.retrievers import IRISBm25Retriever
 
 pipeline = Pipeline()
 pipeline.add_component(
