@@ -222,9 +222,9 @@ extra_javascript:
 # Extra — social links, analytics, version
 # ─────────────────────────────────────────────────────────────────────────────
 extra:
-  version:
-    provider: mike              # multi-version docs support
-    default: stable
+  #version:
+    #provider: mike              # multi-version docs support
+    #default: stable
 
   social:
     - icon: fontawesome/brands/github
