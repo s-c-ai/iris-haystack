@@ -4,8 +4,8 @@
 [![Haystack](https://img.shields.io/pypi/v/haystack-ai.svg?label=haystack)](https://pypi.org/project/haystack-ai/)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3120/)
 [![PyPI - Version](https://img.shields.io/pypi/v/intersystems-iris-haystack.svg)](https://pypi.org/project/intersystems-iris-haystack/)
+[![Documentation](https://img.shields.io/badge/docs-mkdocs%20material-blue.svg?style=flat)](https://s-c-ai.github.io/iris-haystack/)
 [![Tests](https://github.com/s-c-ai/iris-haystack/actions/workflows/test.yml/badge.svg)](https://github.com/s-c-ai/iris-haystack/actions)
-
 
 ## Table of Contents
 - [Overview](#overview)
