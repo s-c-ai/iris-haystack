@@ -120,7 +120,7 @@ import iris
 conn = iris.connect("localhost:1972/USER", "_system", "SYS")
 cur = conn.cursor()
 cur.execute("SELECT 1")
-print(cur.fetchone())   # (1,)
+print(cur.fetchone())  # (1,)
 conn.close()
 ```
 

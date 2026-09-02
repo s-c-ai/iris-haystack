@@ -81,6 +81,7 @@ from haystack.testing.document_store import (
     WriteDocumentsTest,
 )
 
+
 @pytest.mark.integration
 class TestCountDocuments(CountDocumentsTest):
     @pytest.fixture
@@ -112,9 +113,7 @@ class TestHelpers:
 @pytest.mark.integration
 class TestMyFeature:
     def test_something(self, document_store):
-        document_store.write_documents([
-            Document(id="t1", content="hello world")
-        ])
+        document_store.write_documents([Document(id="t1", content="hello world")])
         assert document_store.count_documents() == 1
 ```
 

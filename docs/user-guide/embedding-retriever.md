@@ -59,9 +59,7 @@ from intersystems_iris_haystack.components.retrievers import IRISEmbeddingRetrie
 pipeline = Pipeline()
 pipeline.add_component(
     "embedder",
-    SentenceTransformersTextEmbedder(
-        model="sentence-transformers/all-MiniLM-L6-v2"
-    ),
+    SentenceTransformersTextEmbedder(model="sentence-transformers/all-MiniLM-L6-v2"),
 )
 pipeline.add_component(
     "retriever",
@@ -129,7 +127,7 @@ from haystack.document_stores.types import FilterPolicy
 retriever = IRISEmbeddingRetriever(
     document_store=store,
     top_k=5,
-    filters={"category": "database"},   # init-time filter
+    filters={"category": "database"},  # init-time filter
     filter_policy=FilterPolicy.REPLACE,
 )
 
@@ -152,7 +150,7 @@ result = retriever.run(
 retriever = IRISEmbeddingRetriever(
     document_store=store,
     top_k=5,
-    filters={"language": "en"},         # always require English docs
+    filters={"language": "en"},  # always require English docs
     filter_policy=FilterPolicy.MERGE,
 )
 
