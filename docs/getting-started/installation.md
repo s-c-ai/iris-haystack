@@ -16,7 +16,7 @@ This installs the core package with two required dependencies:
 
 | Dependency | Purpose |
 |---|---|
-| `haystack-ai` | Haystack 2.x framework |
+| `haystack-ai>=2.27,<3.0` | Supported Haystack 2.x framework |
 | `intersystems-irispython` | Official InterSystems DB-API driver |
 
 ---
@@ -76,6 +76,7 @@ from intersystems_iris_haystack.components.retrievers import (
     IRISEmbeddingRetriever,
     IRISBm25Retriever,
 )
+
 print("iris-haystack installed correctly")
 ```
 

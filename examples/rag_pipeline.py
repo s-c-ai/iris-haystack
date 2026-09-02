@@ -12,8 +12,8 @@ This example shows:
   4. Haystack filter formats (legacy and official)
 
 Prerequisites:
-    docker-compose up -d
-    pip install iris-haystack sentence-transformers
+    docker compose -f examples/docker-compose.yaml up -d
+    pip install "intersystems-iris-haystack" "sentence-transformers"
     create a .env file with your IRIS credentials (see .env.example)
 """
 

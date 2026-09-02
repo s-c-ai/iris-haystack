@@ -74,7 +74,12 @@ Install the integration via pip:
 pip install intersystems-iris-haystack
 ```
 
-Note: For the examples below, you will also need an embedder like sentence-transformers.
+The package supports Haystack 2.x (`haystack-ai>=2.27,<3.0`). For the examples
+below, install the optional Sentence Transformers backend as well:
+
+```bash
+pip install "intersystems-iris-haystack" "sentence-transformers"
+```
 
 **Requires:** Python 3.10+ (Recommended/Tested on 3.12) and a running InterSystems IRIS instance.
 
@@ -135,10 +140,16 @@ indexing = Pipeline()
 indexing.add_component("embedder", SentenceTransformersDocumentEmbedder(model=MODEL))
 indexing.add_component("writer", DocumentWriter(store, policy=DuplicatePolicy.OVERWRITE))
 indexing.connect("embedder.documents", "writer.documents")
-indexing.run({"embedder": {"documents": [
-    Document(content="IRIS is a multimodel database.", meta={"category": "db"}),
-    Document(content="Haystack builds LLM pipelines.",  meta={"category": "ai"}),
-]}})
+indexing.run(
+    {
+        "embedder": {
+            "documents": [
+                Document(content="IRIS is a multimodel database.", meta={"category": "db"}),
+                Document(content="Haystack builds LLM pipelines.", meta={"category": "ai"}),
+            ]
+        }
+    }
+)
 
 # Semantic search
 query_pipeline = Pipeline()
@@ -192,8 +203,7 @@ git clone https://github.com/s-c-ai/iris-haystack.git
 cd iris-haystack
 
 # Start IRIS and example
-cd examples/
-docker-compose up -d
+docker compose -f examples/docker-compose.yaml up -d
 hatch run example:run
 
 # Run all tests
@@ -233,4 +243,3 @@ Apache 2.0 — see [LICENSE](LICENSE).
 - [intersystems-irispython — DB-API driver](https://pypi.org/project/intersystems-irispython/)
 - [InterSystems Developer Community](https://community.intersystems.com/)
 - [Haystack Integrations](https://haystack.deepset.ai/integrations)
-
