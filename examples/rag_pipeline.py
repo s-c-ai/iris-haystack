@@ -12,7 +12,7 @@ This example shows:
   4. Haystack filter formats (legacy and official)
 
 Prerequisites:
-    docker compose -f examples/docker-compose.yaml up -d
+    docker compose -f examples/docker-compose.yaml up -d --wait --wait-timeout 180
     pip install "intersystems-iris-haystack" "sentence-transformers"
     create a .env file with your IRIS credentials (see .env.example)
 """

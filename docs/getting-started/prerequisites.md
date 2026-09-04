@@ -48,18 +48,20 @@ docker --version
 
 ## IRIS Connection Details
 
-Once IRIS is running (see [Docker Setup](docker.md)), the default connection details for IRIS Community Edition are:
+Once IRIS is running with this repository's [Docker Setup](docker.md), use:
 
 | Parameter | Default value |
 |---|---|
 | Host | `localhost` |
 | Port (DB-API / superserver) | `1972` |
 | Namespace | `USER` |
-| Username | `_system` |
-| Password | `SYS` |
+| Username | `demo` |
+| Password | `demo` |
 
-!!! warning "Change the default password"
-    In any environment beyond local development, change the default password immediately via the [Management Portal](http://localhost:52773/csp/sys/UtilHome.csp).
+!!! warning "Development credentials only"
+    The `demo`/`demo` account has broad permissions and is intended only for
+    this isolated local example. Use a dedicated, securely managed account in
+    any other environment.
 
 ---
 
@@ -69,16 +71,16 @@ Once IRIS is running (see [Docker Setup](docker.md)), the default connection det
 
 ```bash
 export IRIS_CONNECTION_STRING="localhost:1972/USER"
-export IRIS_USERNAME="_system"
-export IRIS_PASSWORD="SYS"
+export IRIS_USERNAME="demo"
+export IRIS_PASSWORD="demo"
 ```
 
 Or create a `.env` file at the root of your project:
 
 ```ini title=".env"
 IRIS_CONNECTION_STRING=localhost:1972/USER
-IRIS_USERNAME=_system
-IRIS_PASSWORD=SYS
+IRIS_USERNAME=demo
+IRIS_PASSWORD=demo
 ```
 
 !!! danger "Never commit `.env` to git"

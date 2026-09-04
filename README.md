@@ -88,19 +88,19 @@ pip install "intersystems-iris-haystack" "sentence-transformers"
 Start IRIS locally with Docker:
 
 ```bash
-docker run -d --name iris -p 1972:1972 -p 52773:52773 \
-  intersystemsdc/iris-community:latest
+docker compose -f examples/docker-compose.yaml up -d --wait --wait-timeout 180
 ```
 
 Start an interactive terminal with the following:
 
 ```bash
-docker exec -it my-iris iris session IRIS
+docker exec -it iris-haystack iris session IRIS
 ```
 
 Or login to the Mangement Portal at http://localhost:52773/csp/sys/%25CSP.Portal.Home.zen
 
-The default username is ```_SYSTEM``` and password is ```SYS```; you will be prompted to change this password after logging in.
+The development Compose configuration creates the username `demo` with password `demo`.
+Use these credentials only for local development.
 
 ---
 
@@ -110,8 +110,8 @@ Create a ```.env``` file using ```.env.example``` template and import the defaul
 
 ```bash
 IRIS_CONNECTION_STRING="localhost:1972/USER"
-IRIS_USERNAME="_system"
-IRIS_PASSWORD="SYS"
+IRIS_USERNAME="demo"
+IRIS_PASSWORD="demo"
 ```
 
 ### Example (RAG)
@@ -203,7 +203,8 @@ git clone https://github.com/s-c-ai/iris-haystack.git
 cd iris-haystack
 
 # Start IRIS and example
-docker compose -f examples/docker-compose.yaml up -d
+cp .env.example .env
+docker compose -f examples/docker-compose.yaml up -d --wait --wait-timeout 180
 hatch run example:run
 
 # Run all tests
