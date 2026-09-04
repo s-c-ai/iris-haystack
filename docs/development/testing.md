@@ -23,7 +23,7 @@ The test suite is split into two categories with distinct requirements.
 # Unit tests only — no IRIS needed, runs anywhere
 hatch run test:unit
 
-# Integration tests — IRIS must be running via docker-compose
+# Integration tests — IRIS must be running via Docker Compose
 hatch run test:integration
 
 # All tests
@@ -61,8 +61,8 @@ pytest tests/ --cov=intersystems_iris_haystack --cov-report=term-missing -v
 
 ```bash
 export IRIS_CONNECTION_STRING="localhost:1972/USER"
-export IRIS_USERNAME="_system"
-export IRIS_PASSWORD="SYS"
+export IRIS_USERNAME="demo"
+export IRIS_PASSWORD="demo"
 ```
 
 Or create a `.env` file at the project root — `python-dotenv` is included in the test environment and loads it automatically if you call `load_dotenv()` in a conftest.
@@ -80,6 +80,7 @@ from haystack.testing.document_store import (
     FilterDocumentsTest,
     WriteDocumentsTest,
 )
+
 
 @pytest.mark.integration
 class TestCountDocuments(CountDocumentsTest):
@@ -112,9 +113,7 @@ class TestHelpers:
 @pytest.mark.integration
 class TestMyFeature:
     def test_something(self, document_store):
-        document_store.write_documents([
-            Document(id="t1", content="hello world")
-        ])
+        document_store.write_documents([Document(id="t1", content="hello world")])
         assert document_store.count_documents() == 1
 ```
 
@@ -144,19 +143,16 @@ def document_store():
 
 ## CI configuration
 
-Tests run automatically on every pull request and push to `main`. See `.github/workflows/tests.yml` for the full configuration. The CI matrix covers Python 3.10, 3.11, 3.12, and 3.13.
+Tests run automatically on every pull request and push to `main`. See
+`.github/workflows/test.yml` for the full configuration. The CI matrix covers
+Python 3.10, 3.11, 3.12, and 3.13.
 
-Integration tests run with IRIS as a Docker service in GitHub Actions:
+The workflow starts the same health-checked Compose service used by the examples:
 
 ```yaml
-services:
-  iris:
-    image: intersystemsdc/iris-community:latest
-    ports:
-      - 1972:1972
-    options: >-
-      --health-cmd "iris status"
-      --health-interval 15s
-      --health-retries 5
-      --health-start-period 45s
+- name: Start InterSystems IRIS via Docker
+  run: |
+    docker compose \
+      -f examples/docker-compose.yaml \
+      up -d --wait --wait-timeout 180
 ```

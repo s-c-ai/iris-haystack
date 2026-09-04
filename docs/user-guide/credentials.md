@@ -59,9 +59,11 @@ Load it before instantiating the store:
 
 ```python
 from dotenv import load_dotenv
+
 load_dotenv()
 
 from intersystems_iris_haystack.document_stores import IRISDocumentStore
+
 store = IRISDocumentStore(embedding_dim=384)
 ```
 
@@ -85,7 +87,7 @@ store = IRISDocumentStore(
     connection_string=Secret.from_token("localhost:1972/USER"),
     username=Secret.from_token("_system"),
     password=Secret.from_token("SYS"),
-    embedding_dim=4,   # small for tests
+    embedding_dim=4,  # small for tests
 )
 ```
 
@@ -179,15 +181,18 @@ For production deployments, inject credentials via your secrets manager:
 === "AWS Secrets Manager"
     ```python
     import boto3, json
+
     secret = boto3.client("secretsmanager").get_secret_value(SecretId="iris/prod")
     creds = json.loads(secret["SecretString"])
 
     import os
+
     os.environ["IRIS_CONNECTION_STRING"] = creds["connection_string"]
     os.environ["IRIS_USERNAME"] = creds["username"]
     os.environ["IRIS_PASSWORD"] = creds["password"]
 
     from intersystems_iris_haystack.document_stores import IRISDocumentStore
+
     store = IRISDocumentStore(embedding_dim=384)
     ```
 

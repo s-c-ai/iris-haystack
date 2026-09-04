@@ -185,7 +185,7 @@ cov         = "pytest --cov=intersystems_iris_haystack {args:tests}"
 # Run unit tests only (fast, no IRIS required)
 hatch run test:unit
 
-# Run integration tests (IRIS must be running via docker-compose up -d)
+# Run integration tests (IRIS must be running via Docker Compose)
 hatch run test:integration
 
 # Run everything and print coverage
@@ -213,11 +213,12 @@ dependencies = [
 ]
 
 [tool.hatch.envs.example.scripts]
-run = "python examples/rag_pipeline.py"
+run = 'python "{root}{/}examples{/}rag_pipeline.py"'
 ```
 
 ```bash
-# Run the complete RAG example (IRIS must be running)
+# Run the complete RAG example from the repository root or any subdirectory
+# (IRIS must be running)
 hatch run example:run
 ```
 
@@ -242,16 +243,16 @@ addopts = ["--import-mode=importlib"]  # (1)
 ```python title="tests/test_document_store.py"
 import pytest
 
+
 class TestCountDocuments:
     # No marker = runs in both unit and integration
-    def test_embedding_to_str(self):
-        ...
+    def test_embedding_to_str(self): ...
+
 
 @pytest.mark.integration
 class TestWriteDocuments:
     # Requires IRIS — only runs with hatch run test:integration
-    def test_write_basic(self, document_store):
-        ...
+    def test_write_basic(self, document_store): ...
 ```
 
 ---
@@ -359,7 +360,8 @@ git clone https://github.com/s-c-ai/iris-haystack.git
 cd iris-haystack
 
 # Start IRIS
-docker-compose up -d
+cp .env.example .env
+docker compose -f examples/docker-compose.yaml up -d --wait --wait-timeout 180
 
 # Run all tests (hatch creates the env automatically)
 hatch run test:all

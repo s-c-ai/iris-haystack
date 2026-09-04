@@ -32,7 +32,8 @@ cd iris-haystack
 git checkout -b feature/my-improvement
 
 # 4. Start IRIS
-docker-compose up -d
+cp .env.example .env
+docker compose -f examples/docker-compose.yaml up -d --wait --wait-timeout 180
 
 # 5. Verify everything works
 hatch run test:all

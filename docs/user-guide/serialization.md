@@ -38,9 +38,7 @@ store = IRISDocumentStore(embedding_dim=384)
 pipeline = Pipeline()
 pipeline.add_component(
     "embedder",
-    SentenceTransformersTextEmbedder(
-        model="sentence-transformers/all-MiniLM-L6-v2"
-    ),
+    SentenceTransformersTextEmbedder(model="sentence-transformers/all-MiniLM-L6-v2"),
 )
 pipeline.add_component(
     "retriever",
@@ -102,9 +100,10 @@ metadata: {}
 ```python
 # Make sure credentials are set in the environment
 import os
+
 os.environ["IRIS_CONNECTION_STRING"] = "localhost:1972/USER"
-os.environ["IRIS_USERNAME"]          = "_system"
-os.environ["IRIS_PASSWORD"]          = "SYS"
+os.environ["IRIS_USERNAME"] = "_system"
+os.environ["IRIS_PASSWORD"] = "SYS"
 
 from haystack import Pipeline
 
@@ -159,6 +158,7 @@ IRIS_PASSWORD=s3cur3P@ssw0rd
 
 ```python
 from dotenv import load_dotenv
+
 load_dotenv()  # loads from .env before constructing the pipeline
 
 with open("rag_pipeline.yaml") as f:

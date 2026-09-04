@@ -4,62 +4,34 @@ title: Docker Setup
 
 # Docker Setup
 
-The fastest way to run InterSystems IRIS locally is with the official Community Edition Docker image.
+The fastest way to run InterSystems IRIS locally is with the repository's tested
+Docker Compose configuration.
 
 ---
 
-## Start IRIS with a single command
+## Start IRIS
 
 ```bash
-docker run -d \
-  --name iris \
-  -p 1972:1972 \
-  -p 52773:52773 \
-  intersystemsdc/iris-community:latest
+docker compose \
+  -f examples/docker-compose.yaml \
+  up -d --wait --wait-timeout 180
 ```
 
-| Flag | Purpose |
-|---|---|
-| `-d` | Run in detached (background) mode |
-| `--name iris` | Name the container for easy reference |
-| `-p 1972:1972` | Superserver port — used by the Python DB-API driver |
-| `-p 52773:52773` | Web port — Management Portal and REST APIs |
+This configuration uses `intersystemsdc/iris-community:latest`, waits until IRIS
+and its database access are ready, and creates the local development user
+`demo` with password `demo`.
 
----
-
-## Using docker-compose (recommended for projects)
-
-Create a `docker-compose.yml` at the root of your project:
-
-```yaml title="docker-compose.yml"
-version: "3.8"
-
-services:
-  iris:
-    image: intersystemsdc/iris-community:latest
-    container_name: iris
-    ports:
-      - "1972:1972"    # DB-API superserver
-      - "52773:52773"  # Management Portal
-    volumes:
-      - iris-data:/usr/irissys/mgr   # persist data between restarts
-    healthcheck:
-      test: ["CMD", "iris", "status"]
-      interval: 15s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
-
-volumes:
-  iris-data:
-```
-
-Start and stop:
+Copy the matching example credentials:
 
 ```bash
-docker-compose up -d      # start in background
-docker-compose down       # stop (data persists in volume)
-docker-compose down -v    # stop AND delete all data
+cp .env.example .env
+```
+
+Stop the container while preserving or removing its data:
+
+```bash
+docker compose -f examples/docker-compose.yaml down
+docker compose -f examples/docker-compose.yaml down -v
 ```
 
 ---
@@ -68,10 +40,10 @@ docker-compose down -v    # stop AND delete all data
 
 ```bash
 # Check container status
-docker ps --filter name=iris
+docker ps --filter name=iris-haystack
 
 # Check logs
-docker logs iris --tail 30
+docker logs iris-haystack --tail 30
 ```
 
 You should see `IRIS for UNIX ... startup successful` in the logs.
@@ -82,12 +54,12 @@ You should see `IRIS for UNIX ... startup successful` in the logs.
 
 Open [http://localhost:52773/csp/sys/UtilHome.csp](http://localhost:52773/csp/sys/UtilHome.csp) in your browser.
 
-Default credentials:
+Local development credentials:
 
 | Field | Value |
 |---|---|
-| Username | `_system` |
-| Password | `SYS` |
+| Username | `demo` |
+| Password | `demo` |
 
 ### Exploring your data via SQL
 
@@ -117,10 +89,10 @@ WHERE embedding IS NOT NULL
 ```python
 import iris
 
-conn = iris.connect("localhost:1972/USER", "_system", "SYS")
+conn = iris.connect("localhost:1972/USER", "demo", "demo")
 cur = conn.cursor()
 cur.execute("SELECT 1")
-print(cur.fetchone())   # (1,)
+print(cur.fetchone())  # (1,)
 conn.close()
 ```
 
@@ -136,7 +108,7 @@ If this works, IRIS is ready and `iris-haystack` can connect.
 Error: Bind for 0.0.0.0:1972 failed: port is already allocated
 ```
 
-Change the host port in `docker-compose.yml`:
+Change the host port in `examples/docker-compose.yaml`:
 
 ```yaml
 ports:
@@ -148,14 +120,14 @@ Then update your connection string: `localhost:1973/USER`.
 ### Container exits immediately
 
 ```bash
-docker logs iris
+docker logs iris-haystack
 ```
 
 This usually means the IRIS data directory has permission issues. Try removing the volume:
 
 ```bash
-docker-compose down -v
-docker-compose up -d
+docker compose -f examples/docker-compose.yaml down -v
+docker compose -f examples/docker-compose.yaml up -d --wait --wait-timeout 180
 ```
 
 ### Cannot connect from Python
