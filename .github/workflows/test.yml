@@ -37,9 +37,9 @@ jobs:
 
       - name: Start InterSystems IRIS via Docker
         run: |
-          docker run -d -p 1972:1972 -e IRIS_PASSWORD=SYS -e IRIS_USERNAME=SuperUser intersystemsdc/iris-community:latest
-          echo "Waiting for InterSystems IRIS to initialize..."
-          sleep 25 
+          docker compose \
+            -f examples/docker-compose.yaml \
+            up -d --wait --wait-timeout 180
 
       - name: Install Hatch
         run: pip install hatch
@@ -49,8 +49,18 @@ jobs:
         run: hatch run fmt-check
 
       - name: Run tests
-        env: 
+        env:
           IRIS_CONNECTION_STRING: "127.0.0.1:1972/USER"
-          IRIS_USERNAME: "SuperUser"
-          IRIS_PASSWORD: "SYS"
+          IRIS_USERNAME: "demo"
+          IRIS_PASSWORD: "demo"
         run: hatch run test:all
+
+      - name: Show IRIS diagnostics on failure
+        if: failure()
+        run: |
+          docker compose -f examples/docker-compose.yaml ps
+          docker compose -f examples/docker-compose.yaml logs --no-color iris
+
+      - name: Stop InterSystems IRIS
+        if: always()
+        run: docker compose -f examples/docker-compose.yaml down -v

@@ -80,8 +80,8 @@ The full format supports nested logic and comparison operators.
 
 ```python
 {
-    "operator": "AND",   # or "OR" or "NOT"
-    "conditions": [...]
+    "operator": "AND",  # or "OR" or "NOT"
+    "conditions": [...],
 }
 ```
 
@@ -94,64 +94,74 @@ The full format supports nested logic and comparison operators.
 ### AND — all conditions must be true
 
 ```python
-store.filter_documents({
-    "operator": "AND",
-    "conditions": [
-        {"field": "meta.category", "operator": "==", "value": "db"},
-        {"field": "meta.year",     "operator": ">=", "value": 2023},
-    ],
-})
+store.filter_documents(
+    {
+        "operator": "AND",
+        "conditions": [
+            {"field": "meta.category", "operator": "==", "value": "db"},
+            {"field": "meta.year", "operator": ">=", "value": 2023},
+        ],
+    }
+)
 ```
 
 ### OR — at least one condition must be true
 
 ```python
-store.filter_documents({
-    "operator": "OR",
-    "conditions": [
-        {"field": "meta.category", "operator": "==", "value": "db"},
-        {"field": "meta.category", "operator": "==", "value": "ai"},
-    ],
-})
+store.filter_documents(
+    {
+        "operator": "OR",
+        "conditions": [
+            {"field": "meta.category", "operator": "==", "value": "db"},
+            {"field": "meta.category", "operator": "==", "value": "ai"},
+        ],
+    }
+)
 ```
 
 Equivalent shorthand using `in`:
 
 ```python
-store.filter_documents({
-    "field": "meta.category",
-    "operator": "in",
-    "value": ["db", "ai"],
-})
+store.filter_documents(
+    {
+        "field": "meta.category",
+        "operator": "in",
+        "value": ["db", "ai"],
+    }
+)
 ```
 
 ### NOT — inverts the condition
 
 ```python
-store.filter_documents({
-    "operator": "NOT",
-    "conditions": [
-        {"field": "meta.category", "operator": "==", "value": "draft"},
-    ],
-})
+store.filter_documents(
+    {
+        "operator": "NOT",
+        "conditions": [
+            {"field": "meta.category", "operator": "==", "value": "draft"},
+        ],
+    }
+)
 ```
 
 ### Nested — AND inside OR
 
 ```python
-store.filter_documents({
-    "operator": "OR",
-    "conditions": [
-        {
-            "operator": "AND",
-            "conditions": [
-                {"field": "meta.category", "operator": "==", "value": "db"},
-                {"field": "meta.year",     "operator": ">=", "value": 2024},
-            ],
-        },
-        {"field": "meta.language", "operator": "in", "value": ["pt", "es"]},
-    ],
-})
+store.filter_documents(
+    {
+        "operator": "OR",
+        "conditions": [
+            {
+                "operator": "AND",
+                "conditions": [
+                    {"field": "meta.category", "operator": "==", "value": "db"},
+                    {"field": "meta.year", "operator": ">=", "value": 2024},
+                ],
+            },
+            {"field": "meta.language", "operator": "in", "value": ["pt", "es"]},
+        ],
+    }
+)
 ```
 
 ---
@@ -167,14 +177,14 @@ from haystack.document_stores.types import FilterPolicy
 retriever = IRISEmbeddingRetriever(
     document_store=store,
     top_k=5,
-    filters={"category": "db"},          # init-time filter
+    filters={"category": "db"},  # init-time filter
     filter_policy=FilterPolicy.REPLACE,  # runtime filters REPLACE this (default)
 )
 
 # Runtime filter overrides init-time filter (REPLACE policy)
 result = retriever.run(
     query_embedding=my_vector,
-    filters={"category": "ai"},   # this replaces {"category": "db"}
+    filters={"category": "ai"},  # this replaces {"category": "db"}
 )
 
 # Or use MERGE to combine both filters
@@ -186,7 +196,7 @@ retriever_merge = IRISEmbeddingRetriever(
 )
 result = retriever_merge.run(
     query_embedding=my_vector,
-    filters={"category": "db"},   # AND'd with {"language": "en"}
+    filters={"category": "db"},  # AND'd with {"language": "en"}
 )
 ```
 
@@ -205,6 +215,7 @@ Under the hood, `filter_documents` works as follows:
 
 ```python
 from haystack.utils.filters import document_matches_filter
+
 
 def filter_documents(self, filters=None):
     # 1. Load all documents from IRIS (SELECT id, content, meta, score)

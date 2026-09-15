@@ -14,8 +14,8 @@ This guide shows a complete working example: indexing documents, performing sema
 
 ```bash
 export IRIS_CONNECTION_STRING="localhost:1972/USER"
-export IRIS_USERNAME="_system"
-export IRIS_PASSWORD="SYS"
+export IRIS_USERNAME="demo"
+export IRIS_PASSWORD="demo"
 ```
 
 ---

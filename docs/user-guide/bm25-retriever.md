@@ -116,8 +116,8 @@ The `k1` and `b` parameters are set on the **DocumentStore**, not the retriever:
 ```python
 store = IRISDocumentStore(
     embedding_dim=384,
-    bm25_k1=1.2,   # lower = faster saturation (good for short docs)
-    bm25_b=0.75,   # 0.0 = no length normalization, 1.0 = full
+    bm25_k1=1.2,  # lower = faster saturation (good for short docs)
+    bm25_b=0.75,  # 0.0 = no length normalization, 1.0 = full
 )
 ```
 
@@ -203,11 +203,13 @@ pipeline.connect("text_embedder.embedding", "embedding_retriever.query_embedding
 pipeline.connect("embedding_retriever.documents", "ranker.documents")
 pipeline.connect("bm25_retriever.documents", "ranker.documents")
 
-result = pipeline.run({
-    "text_embedder": {"text": "my query"},
-    "bm25_retriever": {"query": "my query"},
-    "ranker": {"query": "my query"},
-})
+result = pipeline.run(
+    {
+        "text_embedder": {"text": "my query"},
+        "bm25_retriever": {"query": "my query"},
+        "ranker": {"query": "my query"},
+    }
+)
 ```
 
 ---

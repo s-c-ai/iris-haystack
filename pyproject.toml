@@ -35,7 +35,7 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-    "haystack-ai",
+    "haystack-ai>=2.27,<3.0",
     "intersystems-irispython"
 ]
 
@@ -170,7 +170,7 @@ dependencies = [
 ]
 
 [tool.hatch.envs.example.scripts]
-run = "python examples/rag_pipeline.py"
+run = 'python "{root}{/}examples{/}rag_pipeline.py"'
 
 [tool.hatch.envs.docs]
 dependencies = [
@@ -181,10 +181,9 @@ dependencies = [
     "pymdown-extensions>=10.7",
     "mike>=2.1.0",
 ]
- 
+
 [tool.hatch.envs.docs.scripts]
 serve = "mkdocs serve --dev-addr=127.0.0.1:8000"
 build = "mkdocs build --clean --strict"
 #deploy = "mkdocs gh-deploy --force"
 #version = "mike deploy --push --update-aliases {args}"
- 

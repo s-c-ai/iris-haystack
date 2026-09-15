@@ -52,10 +52,12 @@ from intersystems_iris_haystack.document_stores import IRISDocumentStore
 
 store = IRISDocumentStore(embedding_dim=384)
 
-store.write_documents([
-    Document(content="IRIS is a multimodel database.", meta={"category": "db"}),
-    Document(content="Haystack builds LLM pipelines.",  meta={"category": "ai"}),
-])
+store.write_documents(
+    [
+        Document(content="IRIS is a multimodel database.", meta={"category": "db"}),
+        Document(content="Haystack builds LLM pipelines.", meta={"category": "ai"}),
+    ]
+)
 
 print(store.count_documents())
 ```

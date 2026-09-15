@@ -37,11 +37,11 @@ store = IRISDocumentStore(
     connection_string=Secret.from_env_var("IRIS_CONNECTION_STRING"),
     username=Secret.from_env_var("IRIS_USERNAME"),
     password=Secret.from_env_var("IRIS_PASSWORD"),
-    table_name="HaystackDocuments",   # SQL table name (SQLUser schema prepended)
-    embedding_dim=384,                # must match your embedding model
-    bm25_k1=1.5,                      # BM25 term frequency saturation
-    bm25_b=0.75,                      # BM25 length normalization
-    recreate_table=False,             # True = drop all data and recreate table
+    table_name="HaystackDocuments",  # SQL table name (SQLUser schema prepended)
+    embedding_dim=384,  # must match your embedding model
+    bm25_k1=1.5,  # BM25 term frequency saturation
+    bm25_b=0.75,  # BM25 length normalization
+    recreate_table=False,  # True = drop all data and recreate table
 )
 ```
 
@@ -132,13 +132,15 @@ all_docs = store.filter_documents()
 db_docs = store.filter_documents({"category": "database"})
 
 # Official Haystack format
-recent_docs = store.filter_documents({
-    "operator": "AND",
-    "conditions": [
-        {"field": "meta.category", "operator": "==", "value": "database"},
-        {"field": "meta.year",     "operator": ">=", "value": 2023},
-    ],
-})
+recent_docs = store.filter_documents(
+    {
+        "operator": "AND",
+        "conditions": [
+            {"field": "meta.category", "operator": "==", "value": "database"},
+            {"field": "meta.year", "operator": ">=", "value": 2023},
+        ],
+    }
+)
 ```
 
 See the [Metadata Filtering guide](filtering.md) for the full filter syntax reference.
@@ -161,7 +163,7 @@ docs = [
     Document(
         content="Haystack builds LLM pipelines.",
         meta={"category": "ai", "year": 2024},
-        embedding=[0.1, 0.2, ...]  # 384 floats
+        embedding=[0.1, 0.2, ...],  # 384 floats
     ),
 ]
 
@@ -289,9 +291,7 @@ store = IRISDocumentStore(embedding_dim=384)
 pipeline = Pipeline()
 pipeline.add_component(
     "embedder",
-    SentenceTransformersDocumentEmbedder(
-        model="sentence-transformers/all-MiniLM-L6-v2"
-    ),
+    SentenceTransformersDocumentEmbedder(model="sentence-transformers/all-MiniLM-L6-v2"),
 )
 pipeline.add_component(
     "writer",
